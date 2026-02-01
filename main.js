@@ -1,6 +1,8 @@
 const recommendBtn = document.getElementById('recommend-btn');
 const toggleModeBtn = document.getElementById('toggle-mode-btn');
 const menuDisplay = document.getElementById('menu-display');
+const menuImage = document.getElementById('menu-image');
+const menuName = document.getElementById('menu-name');
 
 const dinnerMenus = [
   "치킨",
@@ -29,6 +31,14 @@ function recommendDinnerMenu() {
   return dinnerMenus[randomIndex];
 }
 
+function getMenuImageUrl(menu) {
+  // Using Unsplash for random images based on the menu name
+  // Note: Unsplash might return generic images if the query is too specific or not found.
+  return `https://source.unsplash.com/random/400x300/?${encodeURIComponent(menu)}`;
+}
+
 function displayMenu(menu) {
-  menuDisplay.textContent = menu;
+  menuName.textContent = menu;
+  menuImage.src = getMenuImageUrl(menu);
+  menuImage.style.display = 'block'; // Show the image
 }
