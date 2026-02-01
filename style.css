@@ -97,3 +97,11 @@ button:hover:not(:disabled) {
   border-radius: 4px;
   color: #333;
 }
+
+/* AdSense specific styling */
+.adsbygoogle {
+  margin: 20px auto; /* Center ad and provide vertical margin */
+  max-width: 100%; /* Ensure it fits within container */
+  min-height: 100px; /* Give it some space even if not loaded yet */
+  background-color: #f0f0f0; /* Placeholder background */
+}
