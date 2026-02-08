@@ -56,7 +56,7 @@ input[type="file"]::file-selector-button:hover {
 #uploaded-image {
   max-width: 100%;
   height: auto;
-  display: block;
+  display: none; /* Initial state: hidden */
   margin: 20px auto;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -127,6 +127,7 @@ button:hover:not(:disabled) {
 
 /* Spinner styling */
 .spinner {
+  display: none; /* Initial state: hidden */
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-left-color: #007bff;
   border-radius: 50%;
