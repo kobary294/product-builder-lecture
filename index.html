@@ -61,7 +61,10 @@
         <input type="file" id="file-input" accept="image/*">
         <img id="uploaded-image" src="#" alt="Uploaded Image" style="display:none;">
         <button type="button" id="predict-button" disabled>판별하기</button>
-        <div id="label-container"></div>
+        <button type="button" id="reset-button">다시하기</button>
+        <div id="label-container">
+            <div id="loading-spinner" class="spinner" style="display:none;"></div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
@@ -74,6 +77,8 @@
         const uploadedImage = document.getElementById('uploaded-image');
         const predictButton = document.getElementById('predict-button');
         const labelContainer = document.getElementById('label-container');
+        const resetButton = document.getElementById('reset-button'); // Added reset button reference
+        const loadingSpinner = document.getElementById('loading-spinner'); // Added loading spinner reference
 
         async function init() {
             const modelURL = URL + "model.json";
@@ -82,11 +87,15 @@
             model = await tmImage.load(modelURL, metadataURL);
             maxPredictions = model.getTotalClasses();
 
+            // Append prediction result divs only, spinner div is already in HTML
             for (let i = 0; i < maxPredictions; i++) {
-                labelContainer.appendChild(document.createElement("div"));
+                const predictionDiv = document.createElement("div");
+                predictionDiv.className = 'prediction-result'; // Add a class for styling
+                labelContainer.appendChild(predictionDiv);
             }
 
             predictButton.addEventListener('click', predict);
+            resetButton.addEventListener('click', reset); // Added reset button event listener
         }
 
         fileInput.addEventListener('change', (event) => {
@@ -99,7 +108,7 @@
                     predictButton.disabled = false; // Enable predict button
                     // Clear previous predictions
                     for (let i = 0; i < maxPredictions; i++) {
-                        labelContainer.childNodes[i].innerHTML = '';
+                        labelContainer.childNodes[i+1].innerHTML = ''; // childNodes[0] is spinner
                     }
                 };
                 reader.readAsDataURL(file);
@@ -108,7 +117,7 @@
                 uploadedImage.src = '#';
                 predictButton.disabled = true; // Disable predict button
                 for (let i = 0; i < maxPredictions; i++) {
-                    labelContainer.childNodes[i].innerHTML = '';
+                    labelContainer.childNodes[i+1].innerHTML = ''; // childNodes[0] is spinner
                 }
             }
         });
@@ -118,16 +127,39 @@
                 alert('먼저 이미지를 업로드해주세요.');
                 return;
             }
-            // Clear previous predictions
+
+            // Hide previous predictions and show spinner
             for (let i = 0; i < maxPredictions; i++) {
-                labelContainer.childNodes[i].innerHTML = '판별 중...';
+                if (labelContainer.childNodes[i+1]) { // childNodes[0] is the spinner
+                    labelContainer.childNodes[i+1].innerHTML = '';
+                }
             }
+            loadingSpinner.style.display = 'block';
 
             const prediction = await model.predict(uploadedImage);
+            loadingSpinner.style.display = 'none'; // Hide spinner after prediction
+
             for (let i = 0; i < maxPredictions; i++) {
                 const classPrediction =
                     prediction[i].className + ": " + (prediction[i].probability * 100).toFixed(2) + "%";
-                labelContainer.childNodes[i].innerHTML = classPrediction;
+                if (labelContainer.childNodes[i+1]) { // childNodes[0] is the spinner
+                    labelContainer.childNodes[i+1].innerHTML = classPrediction;
+                }
+            }
+        }
+
+        // Added reset function
+        function reset() {
+            fileInput.value = ''; // Clear the file input
+            uploadedImage.style.display = 'none'; // Hide the image
+            uploadedImage.src = '#'; // Clear the image source
+            predictButton.disabled = true; // Disable predict button
+            loadingSpinner.style.display = 'none'; // Ensure spinner is hidden on reset
+            for (let i = 0; i < maxPredictions; i++) {
+                // Clear prediction results
+                if (labelContainer.childNodes[i+1]) { // childNodes[0] is the spinner
+                    labelContainer.childNodes[i+1].innerHTML = '';
+                }
             }
         }
 
