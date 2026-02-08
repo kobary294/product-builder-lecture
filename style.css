@@ -142,3 +142,45 @@ button:hover:not(:disabled) {
     transform: rotate(360deg);
   }
 }
+
+/* Social Share Buttons Styling */
+#share-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+#share-buttons button {
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    font-weight: normal; /* Override general button bold */
+    transition: background-color 0.2s ease;
+    flex-grow: 1; /* Allow buttons to grow */
+    max-width: 150px; /* Limit max width */
+}
+
+#kakao-share-button {
+    background-color: #FEE500;
+    color: #191919;
+}
+#kakao-share-button:hover {
+    background-color: #FFDE00;
+}
+
+#facebook-share-button {
+    background-color: #1877F2;
+}
+#facebook-share-button:hover {
+    background-color: #166FE5;
+}
+
+#twitter-share-button {
+    background-color: #1DA1F2;
+}
+#twitter-share-button:hover {
+    background-color: #1A92DA;
+}

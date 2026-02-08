@@ -108,6 +108,12 @@
             <img id="uploaded-image" src="#" alt="사용자가 업로드한 얼굴 사진">
             <button type="button" id="predict-button" disabled>판별하기</button>
             <button type="button" id="reset-button">다시하기</button>
+
+            <div id="share-buttons">
+                <button type="button" id="kakao-share-button">카카오톡 공유</button>
+                <button type="button" id="facebook-share-button">페이스북 공유</button>
+                <button type="button" id="twitter-share-button">트위터 공유</button>
+            </div>
             <div id="label-container">
                 <div id="loading-spinner" class="spinner"></div>
             </div>
@@ -119,7 +125,10 @@
             <p>&copy; 2026 동물상 테스트. All rights reserved.</p>
         </div>
     </footer>
-
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+      Kakao.init('YOUR_KAKAO_JAVASCRIPT_KEY'); // Replace with your Kakao JavaScript key
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
     <script src="main.js" defer></script>

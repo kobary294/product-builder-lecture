@@ -94,3 +94,60 @@ function reset() {
 }
 
 init();
+
+// Social Sharing Functions
+const pageUrl = "https://product-builder-lecture-2x8.pages.dev/"; // Replace with your actual deployed URL
+const pageTitle = "강아지상 vs 고양이상 테스트 - 나의 동물상 찾아보기";
+const pageDescription = "AI가 당신의 얼굴에서 강아지상과 고양이상의 특징을 분석하여 동물상 지수를 알려드립니다. 재미있는 얼굴 분석 테스트!";
+const pageImage = "https://product-builder-lecture-2x8.pages.dev/og-image.jpg"; // Replace with your actual Open Graph image
+
+document.addEventListener('DOMContentLoaded', () => {
+    const kakaoShareButton = document.getElementById('kakao-share-button');
+    const facebookShareButton = document.getElementById('facebook-share-button');
+    const twitterShareButton = document.getElementById('twitter-share-button');
+
+    if (kakaoShareButton) {
+        kakaoShareButton.addEventListener('click', () => {
+            if (Kakao.isInitialized()) {
+                Kakao.Share.sendDefault({
+                    objectType: 'feed',
+                    content: {
+                        title: pageTitle,
+                        description: pageDescription,
+                        imageUrl: pageImage,
+                        link: {
+                            mobileWebUrl: pageUrl,
+                            webUrl: pageUrl,
+                        },
+                    },
+                    buttons: [
+                        {
+                            title: '웹으로 보기',
+                            link: {
+                                mobileWebUrl: pageUrl,
+                                webUrl: pageUrl,
+                            },
+                        },
+                    ],
+                });
+            } else {
+                console.error('Kakao SDK not initialized. Please check your JavaScript key.');
+                alert('카카오톡 공유 기능을 사용할 수 없습니다. 잠시 후 다시 시도해 주세요.');
+            }
+        });
+    }
+
+    if (facebookShareButton) {
+        facebookShareButton.addEventListener('click', () => {
+            const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+            window.open(facebookShareUrl, 'facebook-share-dialog', 'width=800,height=600');
+        });
+    }
+
+    if (twitterShareButton) {
+        twitterShareButton.addEventListener('click', () => {
+            const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(pageTitle)}&url=${encodeURIComponent(pageUrl)}`;
+            window.open(twitterShareUrl, 'twitter-share-dialog', 'width=800,height=600');
+        });
+    }
+});
